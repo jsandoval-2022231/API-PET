@@ -9,7 +9,7 @@ const existenteEmail = async (correo = '') => {
 
 const existeUsuarioById = async ( id = '') => {
     const existeUsuario = await Usuario.findOne({id});
-    if(!existeUsuario){
+    if(existeUsuario){
         throw new Error(`El usuario con el ${ id } no existe`);
     }
 }
