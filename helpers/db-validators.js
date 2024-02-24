@@ -23,6 +23,18 @@ const existeMascotaId = async ( id = '') => {
     }
 }
 
+const existeMascotaNombre = async ( nombre = '') => {
+    const existeMascotaNombre = await Mascota.findOne({nombre});
+    if(existeMascotaNombre){
+        throw new Error(`La mascota con el ${ nombre } ya existe`);
+    }
+}
+
+const edadMinimal = async (edad = 0) => {
+    if(edad <= 0){
+        throw new Error(`La edad no puede ser menor a 0`);
+    }
+}
 
 const esRolValido = async (role='') => {
     const existeRol = await Role.findOne({role});
@@ -36,5 +48,7 @@ module.exports = {
     existenteEmail,
     existeUsuarioById,
     esRolValido,
-    existeMascotaId
+    existeMascotaId,
+    existeMascotaNombre,
+    edadMinimal
 }

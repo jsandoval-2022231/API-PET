@@ -1,5 +1,4 @@
 const { response, json } = require('express');
-const bcryptjs = require('bcryptjs');
 const Mascota = require('../models/mascota');
 
 const mascotaGet = async (req, res = response) => {
@@ -40,14 +39,14 @@ const getMascotaById = async (req, res) => {
 
 const mascotaPut = async (req, res) => {
     const { id } = req.params;
-    const { _id, nombre, adoptado, ...resto} = req.body;
+    const { _id, edad, raza, ...resto} = req.body;
 
     await Mascota.findByIdAndUpdate(id, resto);
 
     const mascota = await Mascota.findOne({_id: id});
 
     res.status(200).json({
-        msg: 'Mascota Actualizado exitosamente',
+        msg: 'Mascota fue adoptada :D',
         mascota
     })
 }

@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
+
 const { mascotaGet, mascotasPost, mascotaDelete, mascotaPut, getMascotaById} = require('../controllers/mascota.controller');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { raza, existeMascotaId } = require('../helpers/db-validators');
+const { existeMascotaId, edadMinimal, existeMascotaNombre } = require('../helpers/db-validators');
 
 const router = Router();
 
@@ -18,17 +19,17 @@ router.get(
     ], getMascotaById);
 
 router.post(
-    "/:id",
+    "/",
     [
-        check("id", "El id no es un formato valido de mongoDB").isMongoId(),
-        check("edad","La edad es obligatoria").not().isEmpty(),
+        check("edad", "la edad minima debe de ser mayor a 1").custom(edadMinimal),
+        check("nombre","El nombre es obligatorio").custom(existeMascotaNombre),
         validarCampos
     ], mascotasPost);
 
 router.put(
-    "/:id",
-    [
+    "/:id", [
         check("id", "El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeMascotaId),
         validarCampos
     ], mascotaPut);
 
@@ -40,12 +41,5 @@ router.delete(
         validarCampos
     ], mascotaDelete);
 
-
-router.post(
-    "/",
-    [
-        check("nombre", "El nombre es obligatorio").not().isEmpty(),
-        validarCampos,
-    ], mascotasPost);
 
 module.exports = router;
